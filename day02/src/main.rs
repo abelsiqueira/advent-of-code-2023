@@ -23,9 +23,11 @@ fn evaluate_feasibility(r: &u32, g: &u32, b: &u32) -> bool {
 }
 
 fn parse_set(line: &str) -> (u32, u32, u32) {
+    // line = "2 red, 3 blue"
     let mut r = 0;
     let mut g = 0;
     let mut b = 0;
+
     for cube_str in line.split(", ").collect::<Vec<&str>>() {
         let cube_str_split: Vec<&str> = cube_str.split(" ").collect();
         let number: u32 = cube_str_split[0].parse().unwrap();
@@ -44,12 +46,9 @@ fn parse_game_data(line: &String) -> (u32, Vec<(u32, u32, u32)>) {
     let id: u32 = split[0].split(" ").collect::<Vec<&str>>()[1]
         .parse()
         .unwrap();
-    let mut sets: Vec<(u32, u32, u32)> = (&[]).to_vec();
 
-    for set in split[1].split("; ").collect::<Vec<&str>>() {
-        let (r, g, b) = parse_set(set);
-        sets.push((r, g, b));
-    }
+    let sets = split[1].split("; ").map(|set| parse_set(set)).collect();
+
     return (id, sets);
 }
 
